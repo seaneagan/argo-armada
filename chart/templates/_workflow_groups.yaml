@@ -1,0 +1,29 @@
+{{- define "workflow_groups" -}}
+{{- $envAll := . -}}
+{{- $local := dict -}}
+{{-  $_ := set $local "unnamed_index" 0 -}}
+{{- $groups := $envAll.Values.spec -}}
+- name: deploy
+  steps:
+{{- range $group := $groups -}}
+  {{- if not (hasKey $group "name") -}}
+    {{- $_ := set $local "unnamed_index" (add1 $local.unnamed_index) -}}
+    {{- $_ := set $group "name" (print "unnamed-" $local.unnamed_index) -}}
+  {{- end }}
+    - - name: deploy-group-{{ $group.name }}
+        template: deploy-group-{{ $group.name }}
+{{- end }}
+{{- range $group := $groups }}
+- name: deploy-group-{{ $group.name }}
+  steps:
+    -
+{{- range $chart := $group.charts }}
+      - name: deploy-chart-{{ $chart }}
+        template: deploy-chart
+        arguments:
+          parameters:
+            - name: chart
+              value: {{ $chart }}
+{{- end -}}
+{{- end -}}
+{{- end -}}

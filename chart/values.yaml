@@ -1,0 +1,15 @@
+
+generate_name: armada
+
+# See examples directory.
+type: null
+spec: null
+
+task_template:
+  release_prefix: armada
+  container:
+    image: alpine:latest
+    command: [echo]
+    # TODO: this is the real implementation, once armada supports it
+    # image: quay.io/airshipit/armada:master-ubuntu_xenial
+    # command: [sh, -c]

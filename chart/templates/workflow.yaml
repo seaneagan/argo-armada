@@ -1,0 +1,13 @@
+
+{{- $envAll := . -}}
+{{- $template := print "workflow_" $envAll.Values.type -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: {{ print $envAll.Values.generate_name "-" }}
+spec:
+  entrypoint: deploy
+  templates:
+{{ include $template $envAll | indent 4 }}
+    -
+{{ include "task_template" $envAll | indent 6 }}

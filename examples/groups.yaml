@@ -1,0 +1,16 @@
+type: groups
+spec:
+  - name: A
+    charts:
+      - A1
+      - A2
+  -
+    # name is optional
+    # name: B
+    charts:
+      - B1
+      - B2
+      - B3
+  - name: C
+    charts:
+      - C1

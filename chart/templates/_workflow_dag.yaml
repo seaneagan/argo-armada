@@ -1,0 +1,20 @@
+{{- define "workflow_dag" -}}
+{{- $envAll := . -}}
+{{- $local := dict -}}
+- name: deploy
+  dag:
+    tasks:
+{{- range $chart := $envAll.Values.spec }}
+{{-  $_ := set $local "dependencies" list -}}
+{{- range $dep := default $chart.dependencies list -}}
+{{-  $_ := set $local "dependencies" (append $local.dependencies (print "deploy-chart-" $dep)) -}}
+{{- end }}
+      - name: deploy-chart-{{ $chart.name }}
+        template: deploy-chart
+        dependencies: {{ toJson $local.dependencies }}
+        arguments:
+          parameters:
+            - name: chart
+              value: {{ $chart.name }}
+{{ end }}
+{{- end -}}
