@@ -1,0 +1,7 @@
+apiVersion: "armada.airshipit.org/v1alpha1"
+kind: "ArmadaWorkflow"
+metadata:
+  name: invalid-multiple-type-keys
+spec:
+  dag: []
+  groups: []

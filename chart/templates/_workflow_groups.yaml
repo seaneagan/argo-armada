@@ -2,7 +2,7 @@
 {{- $envAll := . -}}
 {{- $local := dict -}}
 {{-  $_ := set $local "unnamed_index" 0 -}}
-{{- $groups := $envAll.Values.spec -}}
+{{- $groups := $envAll.Values.groups -}}
 - name: deploy
   steps:
 {{- range $group := $groups -}}

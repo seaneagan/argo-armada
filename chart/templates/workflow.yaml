@@ -1,10 +1,19 @@
 
 {{- $envAll := . -}}
-{{- $template := print "workflow_" $envAll.Values.type -}}
+{{- $type_keys := list "dag" "groups" -}}
+{{- $local := dict -}}
+{{-  $_ := set $local "found_keys" list -}}
+{{- range $key := $type_keys -}}
+  {{- if not (empty (index $envAll.Values $key)) -}}
+    {{-  $_ := set $local "found_keys" (append $local.found_keys $key) -}}
+  {{- end -}}
+{{- end -}}
+{{- $type_key := index $local.found_keys 0 -}}
+{{- $template := print "workflow_" $type_key -}}
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: {{ print $envAll.Values.generate_name "-" }}
+  name: {{ $envAll.Release.Name }}
 spec:
   entrypoint: deploy
   templates:

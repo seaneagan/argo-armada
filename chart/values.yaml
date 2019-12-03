@@ -1,9 +1,9 @@
 
-generate_name: armada
+name: armada
 
 # See examples directory.
-type: null
-spec: null
+dag: null
+groups: null
 
 task_template:
   release_prefix: armada

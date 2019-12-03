@@ -1,21 +1,25 @@
-type: dag
+apiVersion: "armada.airshipit.org/v1alpha1"
+kind: "ArmadaWorkflow"
+metadata:
+  name: dag
 spec:
-  - name: C1
-    dependencies:
-      - B1
-      - B2
-      - B3
-  - name: B1
-    dependencies:
-      - A1
-      - A2
-  - name: B2
-    dependencies:
-      - A1
-  - name: B3
-    dependencies:
-      - A2
-  - name: A1
-    # dependencies is optional
-    # dependencies: []
-  - name: A2
+  dag:
+    - name: C1
+      dependencies:
+        - B1
+        - B2
+        - B3
+    - name: B1
+      dependencies:
+        - A1
+        - A2
+    - name: B2
+      dependencies:
+        - A1
+    - name: B3
+      dependencies:
+        - A2
+    - name: A1
+      # dependencies is optional
+      # dependencies: []
+    - name: A2
