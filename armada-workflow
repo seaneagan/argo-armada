@@ -3,7 +3,7 @@
 namespace=$1
 workflow=$2
 
-values=$(kubectl get armadaworkflows -n $namespace $workflow -o jsonpath={.spec} -o json)
+values=$(kubectl get armadaworkflows -n $namespace $workflow -o json | jq .spec)
 values_file=$(mktemp)
 echo "$values" > "$values_file"
 argo_wf=$(helm template --name "$workflow" chart --values="$values_file")

@@ -7,9 +7,12 @@ inputs:
   - name: chart
 container:
 {{ $task_template.container | toYaml | indent 2 }}
+  volumeMounts:
+    - name: converted
+      mountPath: /tmp/converted
   args:
     - armada
     - apply_chart
     - --release_prefix={{ $task_template.release_prefix }}
-    - "{{ "{{inputs.parameters.chart}}" }}"
+    - "/tmp/converted/{{ "{{inputs.parameters.chart}}" }}"
 {{- end -}}

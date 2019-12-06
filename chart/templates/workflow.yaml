@@ -16,7 +16,17 @@ metadata:
   name: {{ $envAll.Release.Name }}
 spec:
   entrypoint: deploy
+  volumeClaimTemplates:
+    - metadata:
+        name: converted
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
   templates:
+    -
+{{ include "convert_template" $envAll | indent 6 }}
 {{ include $template $envAll | indent 4 }}
     -
 {{ include "task_template" $envAll | indent 6 }}
