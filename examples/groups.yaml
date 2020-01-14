@@ -4,17 +4,23 @@ metadata:
   name: groups
 spec:
   groups:
-    - name: A
+    - name: a
       charts:
-        - A1
-        - A2
+        - namespace: default
+          name: a1
+        - namespace: default
+          name: a2
     -
       # name is optional
-      # name: B
+      # name: b
       charts:
-        - B1
-        - B2
-        - B3
-    - name: C
+        - namespace: default
+          name: b1
+        - namespace: default
+          name: b2
+        - namespace: default
+          name: b3
+    - name: c
       charts:
-        - C1
+        - namespace: default
+          name: c1

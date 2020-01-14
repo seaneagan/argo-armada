@@ -22,6 +22,7 @@ spec:
                   type: string
                 values:
                   type: object
+                  x-kubernetes-preserve-unknown-fields: true
                 dependencies:
                   type: array
                   items:
@@ -164,4 +165,4 @@ spec:
   names:
     plural: "armadacharts"
     singular: "armadachart"
-    kind: "ArmadaCharts"
+    kind: "ArmadaChart"

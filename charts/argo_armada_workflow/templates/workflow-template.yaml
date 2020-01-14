@@ -1,0 +1,39 @@
+
+{{- $envAll := . -}}
+{{- $type_keys := list "dag" "groups" -}}
+{{- $local := dict -}}
+{{- $workflow := $envAll.Values.workflow -}}
+{{-  $_ := set $local "found_keys" list -}}
+{{- range $key := $type_keys -}}
+  {{- if not (empty (index $workflow.spec $key)) -}}
+    {{-  $_ := set $local "found_keys" (append $local.found_keys $key) -}}
+  {{- end -}}
+{{- end -}}
+{{- $type_key := index $local.found_keys 0 -}}
+{{- $deploy_templates := print "deploy_templates_" $type_key -}}
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: {{ $envAll.Values.argo_workflow_prefix }}{{ $workflow.metadata.name }}
+spec:
+{{- if $envAll.Values.serviceAccountName }}
+  serviceAccountName: {{ $envAll.Values.serviceAccountName }}
+{{- end }}
+  entrypoint: entrypoint
+  templates:
+    - name: entrypoint
+      steps:
+        - - name: pull
+            template: pull
+        - - name: convert
+            template: convert
+        - - name: deploy
+            template: deploy
+    - name: deploy
+{{ include $deploy_templates $envAll | indent 4 }}
+    - name: pull
+{{ include "pull_template" $envAll | indent 6 }}
+    - name: convert
+{{ include "convert_template" $envAll | indent 6 }}
+    - name: deploy-chart
+{{ include "deploy_chart_template" $envAll | indent 6 }}

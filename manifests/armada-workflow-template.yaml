@@ -1,0 +1,94 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: armada-workflow
+spec:
+  serviceAccountName: armada
+  entrypoint: entrypoint
+  templates:
+    - name: entrypoint
+      inputs:
+        parameters:
+          - name: namespace
+          - name: name
+          - name: kubectl-image
+          - name: generator-image
+          - name: generator-config
+      steps:
+        - - name: get-workflow-json
+            template: get-workflow-json
+            arguments:
+              parameters:
+                - name: image
+                  value: "{{inputs.parameters.kubectl-image}}"
+                - name: namespace
+                  value: "{{inputs.parameters.namespace}}"
+                - name: name
+                  value: "{{inputs.parameters.name}}"
+        - - name: gen-argo-workflow-template
+            template: gen-argo-workflow-template
+            arguments:
+              parameters:
+                - name: image
+                  value: "{{inputs.parameters.generator-image}}"
+                - name: config
+                  value: "{{inputs.parameters.generator-config}}"
+                - name: workflow-json
+                  value: "{{steps.get-workflow-json.outputs.result}}"
+        - - name: apply-argo-workflow-template
+            template: apply-argo-workflow-template
+            arguments:
+              parameters:
+                - name: image
+                  value: "{{inputs.parameters.kubectl-image}}"
+                - name: argo-workflow-template
+                  value: "{{steps.gen-argo-workflow-template.outputs.result}}"
+        - - name: invoke-argo-workflow-template
+            templateRef:
+              name: armada-workflow-{{inputs.parameters.name}}
+              template: entrypoint
+              runtimeResolution: true
+    - name: get-workflow-json
+      inputs:
+        parameters:
+          - name: image
+          - name: namespace
+          - name: name
+      script:
+        image: "{{inputs.parameters.image}}"
+        command: [bash]
+        source: |
+          # Pull armada workflow CR spec json
+          kubectl get armadaworkflows -n "{{inputs.parameters.namespace}}" "{{inputs.parameters.name}}" -o json
+    - name: gen-argo-workflow-template
+      inputs:
+        parameters:
+          - name: image
+          - name: config
+          - name: workflow-json
+      script:
+        image: "{{inputs.parameters.image}}"
+        command: [sh]
+        source: |
+          read -r -d '' values <<EOF
+          workflow: {{inputs.parameters.workflow-json}}
+          {{inputs.parameters.config}}
+          EOF
+          # Generate argo workflow from armada workflow by passing as chart values
+          values_file=$(mktemp)
+          echo "$values" > "$values_file"
+          helm template --name "ignored" /opt/app/argo-armada/charts/argo_armada_workflow --values="$values_file"
+    - name: apply-argo-workflow-template
+      inputs:
+        parameters:
+          - name: image
+          - name: argo-workflow-template
+      script:
+        image: "{{inputs.parameters.image}}"
+        command: [bash]
+        source: |
+          set -x
+          read -r -d '' argo_workflow_template <<'EOF'
+          {{inputs.parameters.argo-workflow-template}}
+          EOF
+          echo "$argo_workflow_template" | kubectl apply -f -

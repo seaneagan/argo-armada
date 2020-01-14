@@ -1,0 +1,3 @@
+kubectl-image: bitnami/kubectl
+generator-image: seaneagan/argo-armada:latest
+generator-config: ""

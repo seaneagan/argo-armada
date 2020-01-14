@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: armada-
+spec:
+  serviceAccountName: armada
+  entrypoint: entrypoint
+  volumeClaimTemplates:
+    - metadata:
+        name: pull-charts
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Mi
+    - metadata:
+        name: convert-charts
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Mi
+  templates:
+    - name: entrypoint
+      inputs:
+        parameters:
+          - name: namespace
+          - name: name
+          - name: kubectl-image
+          - name: generator-image
+      steps:
+        - - name: call-template
+            templateRef:
+              name: armada-workflow
+              template: entrypoint
+            arguments:
+              parameters:
+                - name: namespace
+                  value: "{{inputs.parameters.namespace}}"
+                - name: name
+                  value: "{{inputs.parameters.name}}"
+                - name: kubectl-image
+                  value: "{{inputs.parameters.kubectl-image}}"
+                - name: generator-image
+                  value: "{{inputs.parameters.generator-image}}"

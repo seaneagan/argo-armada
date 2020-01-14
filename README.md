@@ -6,12 +6,18 @@ Exploration of using Argo to implement [Armada](https://opendev.org/airship/arma
 
 1. Install dependencies:
     * kubernetes e.g. [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
-    * [helm](https://helm.sh/docs/intro/install)
+    * [tiller](https://v2.helm.sh/docs/using_helm/#quickstart)
     * [argo](https://argoproj.github.io/docs/argo/demo.html)
-1. Install CRDs:
-    * `kubectl apply -f apis`
+1. Install manifests (CRDs, workflow templates, etc):
+    * `kubectl apply -f manifests -R`
 1. Install example CRs:
-    * `kubectl apply -f examples`
-1. Run examples:
-    * `./armada-workflow default dag`
-    * `./armada-workflow default groups`
+    * `namespace=default`
+    * `kubectl apply -n $namespace -f examples -R`
+1. Run example CRs:
+    * `argo submit armada-workflow.yaml --watch -f parameter-defaults.yaml -p namespace=$namespace -p name=dag`
+    * `argo submit armada-workflow.yaml --watch -f parameter-defaults.yaml -p namespace=$namespace -p name=groups`
+
+# Proposed airshipctl integration
+
+The workflow template in `manifests/armada-workflow-template.yaml` would be
+called by the airshipctl `sitemanage` workflow.

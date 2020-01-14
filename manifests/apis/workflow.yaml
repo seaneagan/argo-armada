@@ -39,10 +39,23 @@ spec:
                     properties:
                       name:
                         type: string
+                      namespace:
+                        type: string
                       dependencies:
                         type: array
                         items:
-                          type: string
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            namespace:
+                              type: string
+                          required:
+                            - name
+                            - namespace
+                    required:
+                      - name
+                      - namespace
                 groups:
                   type: array
                   items:
@@ -53,7 +66,15 @@ spec:
                       charts:
                         type: array
                         items:
-                          type: string
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            namespace:
+                              type: string
+                          required:
+                            - name
+                            - namespace
               oneOf:
                 - required:
                   - dag

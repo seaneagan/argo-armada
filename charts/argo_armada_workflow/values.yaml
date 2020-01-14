@@ -1,0 +1,13 @@
+
+images:
+  tags:
+    kubectl: bitnami/kubectl
+    jq: realguess/jq
+    armada: docker.io/seaneagan/airship-armada:chart_entrypoint-ubuntu_bionic
+
+argo_workflow_prefix: armada-workflow-
+release_prefix: armada
+serviceAccountName: armada
+
+# armadaworkflow CR
+workflow: {}
