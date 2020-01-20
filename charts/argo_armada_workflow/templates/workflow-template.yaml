@@ -10,7 +10,7 @@
   {{- end -}}
 {{- end -}}
 {{- $type_key := index $local.found_keys 0 -}}
-{{- $deploy_templates := print "deploy_templates_" $type_key -}}
+{{- $apply_charts_templates := print "apply_charts_templates_" $type_key -}}
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
@@ -23,17 +23,17 @@ spec:
   templates:
     - name: entrypoint
       steps:
-        - - name: pull
-            template: pull
-        - - name: convert
-            template: convert
-        - - name: deploy
-            template: deploy
-    - name: deploy
-{{ include $deploy_templates $envAll | indent 4 }}
-    - name: pull
-{{ include "pull_template" $envAll | indent 6 }}
-    - name: convert
-{{ include "convert_template" $envAll | indent 6 }}
-    - name: deploy-chart
-{{ include "deploy_chart_template" $envAll | indent 6 }}
+        - - name: pull-charts
+            template: pull-charts
+        - - name: convert-charts
+            template: convert-charts
+        - - name: apply-charts
+            template: apply-charts
+    - name: apply-charts
+{{ include $apply_charts_templates $envAll | indent 4 }}
+    - name: pull-charts
+{{ include "pull_charts_template" $envAll | indent 6 }}
+    - name: convert-charts
+{{ include "convert_charts_template" $envAll | indent 6 }}
+    - name: apply-chart
+{{ include "apply_chart_template" $envAll | indent 6 }}

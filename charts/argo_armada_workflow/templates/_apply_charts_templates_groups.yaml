@@ -1,4 +1,4 @@
-{{- define "deploy_templates_groups" -}}
+{{- define "apply_charts_templates_groups" -}}
 {{- $envAll := . -}}
 {{- $local := dict -}}
 {{-  $_ := set $local "unnamed_index" 0 -}}
@@ -10,22 +10,20 @@
     {{- $_ := set $local "unnamed_index" (add1 $local.unnamed_index) -}}
     {{- $_ := set $group "name" (print "unnamed-" $local.unnamed_index) -}}
   {{- end }}
-    - - name: deploy-group-{{ $group.name }}
-        template: deploy-group-{{ $group.name }}
+    - - name: apply-group-{{ $group.name }}
+        template: apply-group-{{ $group.name }}
 {{- end }}
 {{- range $group := $groups }}
-- name: deploy-group-{{ $group.name }}
+- name: apply-group-{{ $group.name }}
   steps:
     -
 {{- range $chart := $group.charts }}
-      - name: deploy-chart-{{ print $chart.namespace "-" $chart.name }}
-        template: deploy-chart
+      - name: apply-chart-{{ print $chart.namespace "-" $chart.name }}
+        template: apply-chart
         arguments:
           parameters:
-            - name: namespace
-              value: {{ $chart.namespace }}
-            - name: name
-              value: {{ $chart.name }}
+            - name: chart-path
+              value: {{ print $chart.namespace "-" $chart.name | quote }}
 {{- end -}}
 {{- end -}}
 {{- end -}}

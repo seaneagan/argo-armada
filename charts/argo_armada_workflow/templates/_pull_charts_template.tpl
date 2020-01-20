@@ -1,6 +1,5 @@
-{{- define "pull_template" -}}
+{{- define "pull_charts_template" -}}
   {{- $envAll := . -}}
-  {{- $script := $envAll.Values.templates.pull.script -}}
   {{- $local := dict -}}
   {{- $workflow_spec := $envAll.Values.workflow.spec -}}
   {{-  $_ := set $local "charts" list -}}
@@ -17,7 +16,7 @@ script:
   image: {{ $envAll.Values.images.tags.kubectl }}
   command: [/bin/bash]
   volumeMounts:
-    - name: pull-charts
+    - name: pulled-charts
       mountPath: /tmp/pull
   source: |
     set -x
@@ -30,7 +29,7 @@ script:
     while read -r chart; do
       read -r namespace name <<<$(echo "$chart")
       chart_json=$(kubectl get armadacharts -n $namespace $name -o json)
-      echo "$chart_json" > /tmp/pull/${namespace}_${name}
+      echo "$chart_json" > /tmp/pull/${namespace}-${name}
     done <<< "$charts"
 
 {{- end -}}

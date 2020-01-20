@@ -20,4 +20,6 @@ Exploration of using Argo to implement [Armada](https://opendev.org/airship/arma
 # Proposed airshipctl integration
 
 The workflow template in `manifests/armada-workflow-template.yaml` would be
-called by the airshipctl `sitemanage` workflow.
+called by the airshipctl `sitemanage` workflow. Could also add a `softwaremanage`
+workflow if desired, similar to the `update_site` / `update_software` workflows
+in Airship 1.

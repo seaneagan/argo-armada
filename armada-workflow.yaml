@@ -7,14 +7,14 @@ spec:
   entrypoint: entrypoint
   volumeClaimTemplates:
     - metadata:
-        name: pull-charts
+        name: pulled-charts
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
             storage: 10Mi
     - metadata:
-        name: convert-charts
+        name: converted-charts
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:

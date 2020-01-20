@@ -1,0 +1,20 @@
+{{- define "apply_charts_templates_dag" -}}
+{{- $envAll := . -}}
+{{- $local := dict }}
+  dag:
+    tasks:
+{{- $workflow_spec := $envAll.Values.workflow.spec -}}
+{{- range $chart := $workflow_spec.dag }}
+{{-  $_ := set $local "dependencies" list -}}
+{{- range $dep := default $chart.dependencies list -}}
+{{-  $_ := set $local "dependencies" (append $local.dependencies (print "apply-chart-" $dep.namespace "-" $dep.name)) -}}
+{{- end }}
+      - name: apply-chart-{{ print $chart.namespace "-" $chart.name }}
+        template: apply-chart
+        dependencies: {{ toJson $local.dependencies }}
+        arguments:
+          parameters:
+            - name: chart-path
+              value: {{ print $chart.namespace "-" $chart.name | quote }}
+{{ end }}
+{{- end -}}
