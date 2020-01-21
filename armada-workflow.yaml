@@ -28,6 +28,7 @@ spec:
           - name: name
           - name: kubectl-image
           - name: generator-image
+          - name: generator-config
       steps:
         - - name: call-template
             templateRef:
@@ -43,3 +44,5 @@ spec:
                   value: "{{inputs.parameters.kubectl-image}}"
                 - name: generator-image
                   value: "{{inputs.parameters.generator-image}}"
+                - name: generator-config
+                  value: "{{inputs.parameters.generator-config}}"

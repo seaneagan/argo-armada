@@ -68,16 +68,9 @@ spec:
           - name: workflow-json
       script:
         image: "{{inputs.parameters.image}}"
-        command: [sh]
+        command: [/bin/sh]
         source: |
-          read -r -d '' values <<EOF
-          workflow: {{inputs.parameters.workflow-json}}
-          {{inputs.parameters.config}}
-          EOF
-          # Generate argo workflow from armada workflow by passing as chart values
-          values_file=$(mktemp)
-          echo "$values" > "$values_file"
-          helm template --name "ignored" /opt/app/argo-armada/charts/argo_armada_workflow --values="$values_file"
+          argo-armada-generator '{{inputs.parameters.workflow-json}}' '{{inputs.parameters.config}}'
     - name: apply-argo-workflow-template
       inputs:
         parameters:

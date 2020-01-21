@@ -1,0 +1,9 @@
+#!/bin/sh
+read -r -d '' values <<EOF
+workflow: $1
+$2
+EOF
+# Generate argo workflow from armada workflow by passing as chart values
+values_file=$(mktemp)
+echo "$values" > "$values_file"
+helm template --name "ignored" /argo-armada-generator/chart --values="$values_file"
