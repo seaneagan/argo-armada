@@ -7,7 +7,6 @@ images:
 
 argo_workflow_prefix: armada-workflow-
 release_prefix: armada
-serviceAccountName: armada
 
 # armadaworkflow CR
 workflow: {}

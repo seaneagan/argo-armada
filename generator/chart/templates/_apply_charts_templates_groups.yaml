@@ -3,6 +3,7 @@
 {{- $local := dict -}}
 {{-  $_ := set $local "unnamed_index" 0 -}}
 {{- $workflow_spec := $envAll.Values.workflow.spec -}}
+{{- $workflow_namespace := $envAll.Values.workflow.metadata.namespace -}}
 {{- $groups := $workflow_spec.groups }}
   steps:
 {{- range $group := $groups -}}
@@ -18,12 +19,13 @@
   steps:
     -
 {{- range $chart := $group.charts }}
-      - name: apply-chart-{{ print $chart.namespace "-" $chart.name }}
+{{- $chart_namespace := $chart.namespace | default $workflow_namespace }}
+      - name: apply-chart-{{ print $chart_namespace "-" $chart.name }}
         template: apply-chart
         arguments:
           parameters:
             - name: chart-path
-              value: {{ print $chart.namespace "-" $chart.name | quote }}
+              value: {{ print $chart_namespace "-" $chart.name | quote }}
 {{- end -}}
 {{- end -}}
 {{- end -}}

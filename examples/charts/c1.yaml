@@ -2,6 +2,7 @@ apiVersion: "armada.airshipit.org/v1alpha1"
 kind: "ArmadaChart"
 metadata:
   name: c1
+  namespace: argo-armada-examples
 spec:
   release: c1
   namespace: default

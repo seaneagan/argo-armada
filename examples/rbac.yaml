@@ -2,40 +2,17 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: armada
+  namespace: argo-armada
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: armada-cluster-admin
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
+  name: armada-armada
 subjects:
   - kind: ServiceAccount
     name: armada
-    namespace: default
-# ---
-# apiVersion: rbac.authorization.k8s.io/v1
-# kind: ClusterRoleBinding
-# metadata:
-#   name: workflow-role
-# subjects:
-#   - kind: ServiceAccount
-#     name: armada
-# roleRef:
-#   kind: ClusterRole
-#   name: armada
-#   apiGroup: rbac.authorization.k8s.io
-# ---
-# apiVersion: rbac.authorization.k8s.io/v1
-# kind: ClusterRoleBinding
-# metadata:
-#   name: armada
-# subjects:
-#   - kind: ServiceAccount
-#     name: armada
-# roleRef:
-#   kind: Role
-#   name: armada
-#   apiGroup: rbac.authorization.k8s.io
+    namespace: argo-armada
+roleRef:
+  kind: ClusterRole
+  name: armada
+  apiGroup: rbac.authorization.k8s.io

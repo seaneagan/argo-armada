@@ -12,6 +12,7 @@ POC integration of [Armada](https://opendev.org/airship/armada) functionality in
   * can be run standalone
   * can be called from Airship 2 `sitemanage` workflow, as a sub-step (single workflow UI)
   * decomposes each chart installation into its own task for improved visibility
+* Defines appropriate RBAC roles to run the above template
 
 # Demo
 
@@ -20,13 +21,14 @@ POC integration of [Armada](https://opendev.org/airship/armada) functionality in
     * [tiller](https://v2.helm.sh/docs/using_helm/#quickstart)
     * [argo](https://argoproj.github.io/docs/argo/demo.html)
 1. Install manifests (CRDs, workflow templates, etc):
+    * `kubectl create namespace argo-armada`
     * `kubectl apply -f manifests -R`
 1. Install example CRs:
-    * `namespace=default`
-    * `kubectl apply -n $namespace -f examples -R`
+    * `kubectl create namespace argo-armada-examples`
+    * `kubectl apply -f examples -R`
 1. Run example CRs:
-    * `argo submit armada-workflow.yaml --watch -f parameter-defaults.yaml -p namespace=$namespace -p name=dag`
-    * `argo submit armada-workflow.yaml --watch -f parameter-defaults.yaml -p namespace=$namespace -p name=groups`
+    * `argo submit armada-workflow.yaml --watch --serviceaccount armada -p kubectl-image=bitnami/kubectl -p generator-image=seaneagan/argo-armada:latest -p generator-config= -p namespace=argo-armada-examples -p name=dag`
+    * `argo submit armada-workflow.yaml --watch --serviceaccount armada -p kubectl-image=bitnami/kubectl -p generator-image=seaneagan/argo-armada:latest -p generator-config= -p namespace=argo-armada-examples -p name=groups`
 
 # Implementation
 

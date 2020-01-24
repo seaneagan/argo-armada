@@ -2,7 +2,8 @@
   {{- $envAll := . -}}
   {{- $local := dict -}}
   {{- $workflow_spec := $envAll.Values.workflow.spec -}}
-  {{-  $_ := set $local "charts" list -}}
+  {{- $workflow_namespace := $envAll.Values.workflow.metadata.namespace -}}
+{{-  $_ := set $local "charts" list -}}
 
   {{- range $chart := $workflow_spec.dag -}}
     {{-  $_ := set $local "charts" (append $local.charts $chart ) -}}
@@ -22,7 +23,7 @@ script:
     set -x
     read -r -d '' charts <<'EOF'
     {{- range $chart := $local.charts }}
-    {{ $chart.namespace }} {{ $chart.name }}
+    {{ $workflow_namespace | default $chart.namespace }} {{ $chart.name }}
     {{- end }}
     EOF
 

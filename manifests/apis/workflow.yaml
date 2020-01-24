@@ -52,10 +52,8 @@ spec:
                               type: string
                           required:
                             - name
-                            - namespace
                     required:
                       - name
-                      - namespace
                 groups:
                   type: array
                   items:
@@ -74,7 +72,6 @@ spec:
                               type: string
                           required:
                             - name
-                            - namespace
               oneOf:
                 - required:
                   - dag

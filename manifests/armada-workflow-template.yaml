@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
   name: armada-workflow
+  namespace: argo-armada
 spec:
   serviceAccountName: armada
   entrypoint: entrypoint
@@ -45,7 +46,9 @@ spec:
                   value: "{{steps.gen-argo-workflow-template.outputs.result}}"
         - - name: invoke-argo-workflow-template
             templateRef:
-              name: armada-workflow-{{inputs.parameters.name}}
+              # TODO: Inject this from the `metadata.name` of the generated workflow template,
+              #       rather than hardcoding the format here.
+              name: armada-workflow-{{inputs.parameters.namespace}}-{{inputs.parameters.name}}
               template: entrypoint
               runtimeResolution: true
     - name: get-workflow-json
