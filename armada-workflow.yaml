@@ -26,9 +26,10 @@ spec:
         parameters:
           - name: namespace
           - name: name
-          - name: kubectl-image
           - name: generator-image
+            default: seaneagan/argo-armada:latest
           - name: generator-config
+            default: "{}"
       steps:
         - - name: call-template
             templateRef:
@@ -40,8 +41,6 @@ spec:
                   value: "{{inputs.parameters.namespace}}"
                 - name: name
                   value: "{{inputs.parameters.name}}"
-                - name: kubectl-image
-                  value: "{{inputs.parameters.kubectl-image}}"
                 - name: generator-image
                   value: "{{inputs.parameters.generator-image}}"
                 - name: generator-config

@@ -14,7 +14,7 @@
     {{- end -}}
   {{- end -}}
 script:
-  image: {{ $envAll.Values.images.tags.kubectl }}
+  image: {{ $envAll.Values.conf.images.tags.kubectl }}
   command: [/bin/bash]
   volumeMounts:
     - name: pulled-charts
@@ -23,7 +23,7 @@ script:
     set -x
     read -r -d '' charts <<'EOF'
     {{- range $chart := $local.charts }}
-    {{ $workflow_namespace | default $chart.namespace }} {{ $chart.name }}
+    {{ $chart.namespace | default $workflow_namespace }} {{ $chart.name }}
     {{- end }}
     EOF
 

@@ -5,39 +5,39 @@ metadata:
   namespace: argo-armada-examples
 spec:
   dag:
-    - namespace: default
+    - namespace: argo-armada-examples
       name: c1
       dependencies:
-        - namespace: default
+        - namespace: argo-armada-examples
           name: b1
-        - namespace: default
+        - namespace: argo-armada-examples
           name: b2
-        - namespace: default
+        - namespace: argo-armada-examples
           name: b3
-    - namespace: default
+    - namespace: argo-armada-examples
       name: b1
       dependencies:
-        - namespace: default
+        - namespace: argo-armada-examples
           name: a1
-        - namespace: default
+        - namespace: argo-armada-examples
           name: a2
-    - namespace: default
+    - namespace: argo-armada-examples
       name: b2
       dependencies:
-        - namespace: default
+        - namespace: argo-armada-examples
           name: a1
-        - namespace: default
+        - namespace: argo-armada-examples
           name: a2
-    - namespace: default
+    - namespace: argo-armada-examples
       name: b3
       dependencies:
-        - namespace: default
+        - namespace: argo-armada-examples
           name: a1
-        - namespace: default
+        - namespace: argo-armada-examples
           name: a2
-    - namespace: default
+    - namespace: argo-armada-examples
       name: a1
       # dependencies is optional
       # dependencies: []
-    - namespace: default
+    - namespace: argo-armada-examples
       name: a2

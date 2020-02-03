@@ -14,7 +14,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: {{ $envAll.Values.argo_workflow_prefix }}{{ $workflow.metadata.namespace }}-{{ $workflow.metadata.name }}
+  name: {{ $envAll.Values.generated_name }}
   namespace: argo-armada
 spec:
   entrypoint: entrypoint

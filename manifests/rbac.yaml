@@ -6,17 +6,34 @@ metadata:
     rbac.armada.airshipit.org/aggregate-to-armada: "true"
 rules:
   - apiGroups:
-      - ""
+      - "apps"
     resources:
       - deployments
       - statefulsets
       - daemonsets
-      - pods
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - batch
+      - extensions
+    resources:
       - jobs
     verbs:
       - get
       - list
       - watch
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+      - delete
   - apiGroups:
       - armada.process
     resources:

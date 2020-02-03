@@ -1,9 +1,27 @@
 #!/bin/sh
-read -r -d '' values <<EOF
-workflow: $1
-$2
-EOF
+
+set -e
+
+# Pull armada workflow CR spec json
+workflow_json=$(kubectl get armadaworkflows -n "$1" "$2" -o json)
+
 # Generate argo workflow from armada workflow by passing as chart values
+generated_name_prefix="armada-workflow-"
+generated_name="$generated_name_prefix$1-$2"
+values=$(cat <<EOF
+generated_name: "$generated_name"
+workflow: $workflow_json
+conf: $3
+EOF
+)
+
 values_file=$(mktemp)
 echo "$values" > "$values_file"
-helm template --name "ignored" /argo-armada-generator/chart --values="$values_file"
+
+generated_workflow_template=$(helm template --name "ignored" /argo-armada-generator/chart --values="$values_file")
+
+# Apply to cluster
+apply_output=$(echo "$generated_workflow_template" | kubectl apply -f -)
+
+# Output template name
+echo "$generated_name"

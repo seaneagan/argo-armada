@@ -1,7 +1,7 @@
 {{- define "convert_charts_template" -}}
   {{- $envAll := . -}}
 script:
-  image: {{ $envAll.Values.images.tags.jq }}
+  image: {{ $envAll.Values.conf.images.tags.jq }}
   command: [/bin/sh]
   volumeMounts:
     - name: pulled-charts

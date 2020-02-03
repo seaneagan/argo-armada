@@ -1,4 +1,0 @@
-kubectl-image: bitnami/kubectl
-generator-image: seaneagan/argo-armada:latest
-# JSON string of values.yaml overrides for generator chart.
-generator-config: ""

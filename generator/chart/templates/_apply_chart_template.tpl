@@ -4,12 +4,12 @@ inputs:
   parameters:
   - name: chart-path
 script:
-  image: {{ "{{ $envAll.Values.images.tags.armada }}" | quote }}
+  image: {{ $envAll.Values.conf.images.tags.armada | quote }}
   command: [/bin/sh]
   volumeMounts:
     - name: converted-charts
       mountPath: /tmp/convert
   source: |
     set -x
-    armada apply_chart --release-prefix={{ $envAll.Values.release_prefix }} "/tmp/convert/{{ "{{inputs.parameters.chart-path}}" }}"
+    armada apply_chart --release-prefix={{ $envAll.Values.conf.release_prefix }} "/tmp/convert/{{ "{{inputs.parameters.chart-path}}" }}"
 {{- end -}}

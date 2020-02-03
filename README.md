@@ -19,7 +19,7 @@ POC integration of [Armada](https://opendev.org/airship/armada) functionality in
 1. Install dependencies:
     * kubernetes e.g. [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
     * [tiller](https://v2.helm.sh/docs/using_helm/#quickstart)
-    * [argo](https://argoproj.github.io/docs/argo/demo.html)
+    * [argo](https://argoproj.github.io/docs/argo/demo.html (need >= v2.5.0-rc6)
 1. Install manifests (CRDs, workflow templates, etc):
     * `kubectl create namespace argo-armada`
     * `kubectl apply -f manifests -R`
@@ -27,8 +27,8 @@ POC integration of [Armada](https://opendev.org/airship/armada) functionality in
     * `kubectl create namespace argo-armada-examples`
     * `kubectl apply -f examples -R`
 1. Run example CRs:
-    * `argo submit armada-workflow.yaml --watch --serviceaccount armada -p kubectl-image=bitnami/kubectl -p generator-image=seaneagan/argo-armada:latest -p generator-config= -p namespace=argo-armada-examples -p name=dag`
-    * `argo submit armada-workflow.yaml --watch --serviceaccount armada -p kubectl-image=bitnami/kubectl -p generator-image=seaneagan/argo-armada:latest -p generator-config= -p namespace=argo-armada-examples -p name=groups`
+    * `argo submit armada-workflow.yaml --watch --serviceaccount armada -p namespace=argo-armada-examples -p name=dag`
+    * `argo submit armada-workflow.yaml --watch --serviceaccount armada -p namespace=argo-armada-examples -p name=groups`
 
 # Implementation
 
@@ -45,10 +45,6 @@ injects each of them into separate Armada CLI containers which invoke the
 
 # Caveats
 
-* The `parameter-defaults.yaml` need to be provided directly (using `-p`) if you are using
-  an argo version with [this bug](https://github.com/argoproj/argo/pull/1733).
-* Currently an argo workflow template [bug](https://github.com/argoproj/argo/issues/1876)
-  causes the generated workflow template to fail.
 * The `apply_chart` armada CLI entrypoint is [not yet merged](https://review.opendev.org/#/c/697728/).
 * In Airship 1, the Armada Helm chart placed tiller as a sidecar, this does not
   since it doesn't really make sense to have separate tillers for each separate
