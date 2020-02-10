@@ -5,21 +5,6 @@ metadata:
   namespace: argo-armada
 spec:
   entrypoint: entrypoint
-  volumeClaimTemplates:
-    - metadata:
-        name: pulled-charts
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 10Mi
-    - metadata:
-        name: converted-charts
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 10Mi
   templates:
     - name: entrypoint
       inputs:

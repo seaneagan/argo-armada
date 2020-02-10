@@ -2,14 +2,12 @@
 {{- $envAll := . -}}
 inputs:
   parameters:
-  - name: chart-path
+  - name: namespace
+  - name: name
 script:
   image: {{ $envAll.Values.conf.images.tags.armada | quote }}
   command: [/bin/sh]
-  volumeMounts:
-    - name: converted-charts
-      mountPath: /tmp/convert
   source: |
     set -x
-    armada apply_chart --release-prefix={{ $envAll.Values.conf.release_prefix }} "/tmp/convert/{{ "{{inputs.parameters.chart-path}}" }}"
+    armada apply_chart --release-prefix={{ $envAll.Values.conf.release_prefix }} "kube:armadacharts/{{ "{{inputs.parameters.namespace}}" }}/{{ "{{inputs.parameters.name}}" }}"
 {{- end -}}

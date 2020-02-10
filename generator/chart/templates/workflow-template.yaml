@@ -21,17 +21,9 @@ spec:
   templates:
     - name: entrypoint
       steps:
-        - - name: pull-charts
-            template: pull-charts
-        - - name: convert-charts
-            template: convert-charts
         - - name: apply-charts
             template: apply-charts
     - name: apply-charts
 {{ include $apply_charts_templates $envAll | indent 4 }}
-    - name: pull-charts
-{{ include "pull_charts_template" $envAll | indent 6 }}
-    - name: convert-charts
-{{ include "convert_charts_template" $envAll | indent 6 }}
     - name: apply-chart
 {{ include "apply_chart_template" $envAll | indent 6 }}

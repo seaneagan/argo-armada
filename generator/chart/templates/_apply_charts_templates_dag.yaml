@@ -4,17 +4,21 @@
   dag:
     tasks:
 {{- $workflow_spec := $envAll.Values.workflow.spec -}}
+{{- $workflow_namespace := $envAll.Values.workflow.metadata.namespace -}}
 {{- range $chart := $workflow_spec.dag }}
 {{-  $_ := set $local "dependencies" list -}}
 {{- range $dep := default $chart.dependencies list -}}
-{{-  $_ := set $local "dependencies" (append $local.dependencies (print "apply-chart-" $dep.namespace "-" $dep.name)) -}}
+{{-  $_ := set $local "dependencies" (append $local.dependencies (print "apply-chart-" ($dep.namespace | default $workflow_namespace) "-" $dep.name)) -}}
 {{- end }}
-      - name: apply-chart-{{ print $chart.namespace "-" $chart.name }}
+{{- $chart_namespace := $chart.namespace | default $workflow_namespace }}
+      - name: apply-chart-{{ print $chart_namespace "-" $chart.name }}
         template: apply-chart
         dependencies: {{ toJson $local.dependencies }}
         arguments:
           parameters:
-            - name: chart-path
-              value: {{ print $chart.namespace "-" $chart.name | quote }}
+            - name: namespace
+              value: {{ $chart_namespace | quote }}
+            - name: name
+              value: {{ $chart.name | quote }}
 {{ end }}
 {{- end -}}

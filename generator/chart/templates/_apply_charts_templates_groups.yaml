@@ -24,8 +24,10 @@
         template: apply-chart
         arguments:
           parameters:
-            - name: chart-path
-              value: {{ print $chart_namespace "-" $chart.name | quote }}
+            - name: namespace
+              value: {{ $chart_namespace | quote }}
+            - name: name
+              value: {{ $chart.name | quote }}
 {{- end -}}
 {{- end -}}
 {{- end -}}

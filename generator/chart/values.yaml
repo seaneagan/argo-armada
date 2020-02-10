@@ -6,7 +6,5 @@ workflow: {}
 conf:
   images:
     tags:
-      kubectl: bitnami/kubectl
-      jq: realguess/jq
-      armada: docker.io/seaneagan/airship-armada:chart_entrypoint-ubuntu_bionic
+      armada: docker.io/seaneagan/airship-armada:chart_entrypoint_kube-ubuntu_bionic
   release_prefix: armada

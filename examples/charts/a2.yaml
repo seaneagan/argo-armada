@@ -5,7 +5,7 @@ metadata:
   namespace: argo-armada-examples
 spec:
   release: a2
-  namespace: default
+  namespace: argo-armada-examples
   wait:
     timeout: 100
     labels:

@@ -4,9 +4,10 @@ POC integration of [Armada](https://opendev.org/airship/armada) functionality in
 
 # Features
 
-* Defines CRDs which:
-  * have feature parity with Airship 1 `armada/***/v2` schema docs
-  * add DAG support
+* Integrates with the armada [chart entrypoint and CRD](https://review.opendev.org/#/q/topic:chart_entrypoint+(status:open+OR+status:merged)) (WIP)
+* Defines a workflow CRD which:
+  * replaces Airship 1 `armada/Manifest/v2` and `armada/ChartGroup/v2` schema docs
+  * adds DAG support
 * Defines static Argo workflow template which:
   * consumes these CRs
   * can be run standalone
@@ -23,6 +24,7 @@ POC integration of [Armada](https://opendev.org/airship/armada) functionality in
 1. Install manifests (CRDs, workflow templates, etc):
     * `kubectl create namespace argo-armada`
     * `kubectl apply -f manifests -R`
+    * `kubectl apply -f "https://review.opendev.org/gitweb?p=airship/armada.git;a=blob_plain;f=apis/chart.yaml;hb=refs/changes/67/706967/1"`
 1. Install example CRs:
     * `kubectl create namespace argo-armada-examples`
     * `kubectl apply -f examples -R`
@@ -39,13 +41,11 @@ which looks up the armada workflow CR and generates an argo workflow template
 from it, using the container image and embedded Helm chart defined in
 `generator`. This generated workflow template is then invoked as the last step,
 utilizing the workflow template `runtimeResolution: true` option. The generated
-workflow template translates the chart CRs into `armada/Chart/v2` docs and
-injects each of them into separate Armada CLI containers which invoke the
-`apply_chart` entrypoint.
+workflow template tasks invokes the armada `apply_chart` entrypoint for each
+referenced armada chart CR.
 
 # Caveats
 
-* The `apply_chart` armada CLI entrypoint is [not yet merged](https://review.opendev.org/#/c/697728/).
 * In Airship 1, the Armada Helm chart placed tiller as a sidecar, this does not
   since it doesn't really make sense to have separate tillers for each separate
   armada CLI container.
