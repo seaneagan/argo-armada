@@ -20,7 +20,7 @@ POC integration of [Armada](https://opendev.org/airship/armada) functionality in
 1. Install dependencies:
     * kubernetes e.g. [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
     * [tiller](https://v2.helm.sh/docs/using_helm/#quickstart)
-    * [argo](https://argoproj.github.io/docs/argo/demo.html (need >= v2.5.0-rc6)
+    * [argo](https://argoproj.github.io/docs/argo/demo.html) (need >= v2.5.0-rc6)
 1. Install manifests (CRDs, workflow templates, etc):
     * `kubectl create namespace argo-armada`
     * `kubectl apply -f manifests -R`
