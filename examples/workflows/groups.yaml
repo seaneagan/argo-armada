@@ -4,6 +4,7 @@ metadata:
   name: groups
   namespace: argo-armada-examples
 spec:
+  generated_name: armada-workflow-groups
   groups:
     - name: a
       charts:

@@ -35,6 +35,9 @@ spec:
                 dag:
                   type: array
                   items:
+                    x-kubernetes-object-ref-api-version: armada.airshipit.org/v1alpha1
+                    x-kubernetes-object-ref-kind: ArmadaChart
+                    x-kubernetes-object-ref-name-key: name
                     type: object
                     properties:
                       name:
@@ -42,6 +45,9 @@ spec:
                       namespace:
                         type: string
                       dependencies:
+                        x-kubernetes-object-ref-api-version: armada.airshipit.org/v1alpha1
+                        x-kubernetes-object-ref-kind: ArmadaChart
+                        x-kubernetes-object-ref-name-key: name
                         type: array
                         items:
                           type: object
@@ -64,6 +70,9 @@ spec:
                       charts:
                         type: array
                         items:
+                          x-kubernetes-object-ref-api-version: armada.airshipit.org/v1alpha1
+                          x-kubernetes-object-ref-kind: ArmadaChart
+                          x-kubernetes-object-ref-name-key: name
                           type: object
                           properties:
                             name:

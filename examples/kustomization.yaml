@@ -1,0 +1,7 @@
+generators:
+  - workflows/dag.yaml
+  - workflows/groups.yaml
+resources:
+  - base
+  - rbac.yaml
+  - charts

@@ -1,10 +1,8 @@
 
-generated_name: null
 # armadaworkflow CR
-workflow: {}
-
-conf:
-  images:
-    tags:
-      armada: docker.io/seaneagan/airship-armada:chart_entrypoint_kube-ubuntu_bionic
-  release_prefix: armada
+workflow:
+  spec:
+    generated_name: null
+    release_prefix: armada
+    apply_chart:
+      image: docker.io/seaneagan/airship-armada:chart_entrypoint_kube-ubuntu_bionic

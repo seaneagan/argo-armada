@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+workflow_yaml_path=$1
+workflow_yaml=$(cat "$workflow_yaml_path")
+
+values=$(cat <<EOF
+workflow:
+$(echo "$workflow_yaml" | sed 's/^/  /')
+EOF
+)
+
+values_file=$(mktemp)
+echo "$values" > "$values_file"
+
+# echo "$values"
+# exit 0
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# Generate workflow template
+helm template --name "ignored" $DIR/chart --values="$values_file"

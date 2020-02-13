@@ -9,24 +9,9 @@ spec:
     - name: entrypoint
       inputs:
         parameters:
-          - name: namespace
           - name: name
-          - name: generator-image
-            default: seaneagan/argo-armada:latest
-          - name: generator-config
-            default: "{}"
       steps:
         - - name: call-template
             templateRef:
-              name: armada-workflow
+              name: "{{inputs.parameters.name}}"
               template: entrypoint
-            arguments:
-              parameters:
-                - name: namespace
-                  value: "{{inputs.parameters.namespace}}"
-                - name: name
-                  value: "{{inputs.parameters.name}}"
-                - name: generator-image
-                  value: "{{inputs.parameters.generator-image}}"
-                - name: generator-config
-                  value: "{{inputs.parameters.generator-config}}"

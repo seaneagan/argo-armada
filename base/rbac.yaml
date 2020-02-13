@@ -44,6 +44,13 @@ rules:
       - create
       - delete
       - patch
+  - apiGroups:
+      - armada.airshipit.org
+    resources:
+      - armadacharts
+    verbs:
+      - get
+      - list
 ---
 # Rules needed for the static workflow template
 apiVersion: rbac.authorization.k8s.io/v1
@@ -66,22 +73,6 @@ rules:
       - armada.airshipit.org
     resources:
       - armadaworkflows
-    verbs:
-      - get
-      - list
----
-# Rules needed for the generated workflow template
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: armada-workflow-generated
-  labels:
-    rbac.armada.airshipit.org/aggregate-to-armada: "true"
-rules:
-  - apiGroups:
-      - armada.airshipit.org
-    resources:
-      - armadacharts
     verbs:
       - get
       - list
