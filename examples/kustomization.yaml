@@ -4,4 +4,5 @@ generators:
 resources:
   - base
   - rbac.yaml
+  - namespace.yaml
   - charts

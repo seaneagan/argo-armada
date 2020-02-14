@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: armada-
-  namespace: argo-armada
+  namespace: argo-armada-examples
 spec:
   entrypoint: entrypoint
   templates:

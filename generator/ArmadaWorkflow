@@ -14,10 +14,16 @@ EOF
 values_file=$(mktemp)
 echo "$values" > "$values_file"
 
-# echo "$values"
-# exit 0
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+# Prefer plugin-local helm cli
+PATH=$DIR:$PATH
+
 # Generate workflow template
-helm template --name "ignored" $DIR/chart --values="$values_file"
+# `helm template` accepts release name differently in helm 2 vs 3
+if helm version --client --short | grep -q "v3\."; then
+  # helm 3 does schema validation as well
+  helm template ignored $DIR/chart --values="$values_file"
+else
+  helm template --name ignored $DIR/chart --values="$values_file"
+fi

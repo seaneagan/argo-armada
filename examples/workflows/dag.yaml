@@ -5,6 +5,7 @@ metadata:
   namespace: argo-armada-examples
 spec:
   generated_name: armada-workflow-dag
+  release_prefix: argo-armada-examples
   dag:
     - namespace: argo-armada-examples
       name: c1
