@@ -22,7 +22,7 @@ POC integration of [Armada](https://opendev.org/airship/armada) functionality in
 
 # Demo
 
-`examples/run.sh`
+`make demo`
 
 # Caveats
 

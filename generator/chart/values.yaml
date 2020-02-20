@@ -6,3 +6,5 @@ workflow:
     release_prefix: armada
     apply_chart:
       image: docker.io/seaneagan/airship-armada:chart_entrypoint_kube-ubuntu_bionic
+    validate_charts:
+      image: bitnami/kubectl

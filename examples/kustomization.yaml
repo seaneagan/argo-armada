@@ -1,9 +1,0 @@
-generators:
-  - workflows/dag.yaml
-  - workflows/groups.yaml
-resources:
-  - base
-  - https://review.opendev.org/airship/armada//apis?ref=refs/changes/67/706967/5
-  - rbac.yaml
-  - namespace.yaml
-  - charts

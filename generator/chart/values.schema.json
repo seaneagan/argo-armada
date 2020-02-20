@@ -5,16 +5,39 @@
     "workflow": {
       "type": "object",
       "properties": {
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "namespace",
+            "name"
+          ]
+        },
         "spec": {
           "type": "object",
           "properties": {
-            "generated_name": {
-              "type": "string"
-            },
             "release_prefix": {
               "type": "string"
             },
             "apply_chart": {
+              "type": "object",
+              "properties": {
+                "image": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "image"
+              ]
+            },
+            "validate_charts": {
               "type": "object",
               "properties": {
                 "image": {
@@ -101,13 +124,14 @@
             }
           ],
           "required": [
-            "generated_name",
             "release_prefix",
-            "apply_chart"
+            "apply_chart",
+            "validate_charts"
           ]
         }
       },
       "required": [
+        "metadata",
         "spec"
       ]
     }

@@ -22,8 +22,8 @@ PATH=$DIR:$PATH
 # Generate workflow template
 # `helm template` accepts release name differently in helm 2 vs 3
 if helm version --client --short | grep -q "v3\."; then
-  # helm 3 does schema validation as well
-  helm template ignored $DIR/chart --values="$values_file"
+  NAME_ARG=
 else
-  helm template --name ignored $DIR/chart --values="$values_file"
+  NAME_ARG=--name=
 fi
+helm template ${NAME_ARG}ignored $DIR/chart --values="$values_file"

@@ -14,12 +14,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: {{ $envAll.Values.workflow.spec.generated_name }}
-  namespace: argo-armada-examples
+  name: {{ $envAll.Values.workflow.metadata.name }}
+  namespace: {{ $envAll.Values.workflow.metadata.namespace }}
 spec:
   entrypoint: entrypoint
   templates:
     - name: entrypoint
+      steps:
+        - - name: validate-charts
+            template: validate-charts
+        - - name: apply-charts
+            template: apply-charts
+    - name: apply-charts
 {{ include $apply_charts_templates $envAll | indent 4 }}
+    - name: validate-charts
+{{ include "validate_charts_template" $envAll | indent 6 }}
     - name: apply-chart
 {{ include "apply_chart_template" $envAll | indent 6 }}

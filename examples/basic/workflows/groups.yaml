@@ -1,10 +1,9 @@
 apiVersion: "armada.airshipit.org/v1alpha1"
 kind: "ArmadaWorkflow"
 metadata:
-  name: groups
+  name: armadaworkflow-groups
   namespace: argo-armada-examples
 spec:
-  generated_name: armada-workflow-groups
   release_prefix: argo-armada-examples
   groups:
     - name: a

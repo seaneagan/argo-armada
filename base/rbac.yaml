@@ -51,6 +51,7 @@ rules:
       - create
       - delete
       - patch
+      - update
   - apiGroups:
       - armada.airshipit.org
     resources:
