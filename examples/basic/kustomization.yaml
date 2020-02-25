@@ -2,7 +2,7 @@ generators:
   - workflows/dag.yaml
   - workflows/groups.yaml
 resources:
-  - github.com/seaneagan/argo-armada//base?ref=kustomize_integration
-  - https://review.opendev.org/airship/armada//apis?ref=refs/changes/67/706967/9
+  - github.com/seaneagan/argo-armada//base?ref=master
+  - https://review.opendev.org/airship/armada//manifests?ref=refs/changes/67/706967/11
   - rbac.yaml
   - charts
