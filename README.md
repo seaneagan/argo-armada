@@ -2,17 +2,12 @@
 
 POC integration of [Armada](https://opendev.org/airship/armada) functionality into Airship 2 environment.
 
-# Description
-
-* defines a kustomize generator plugin which:
-  * takes a configuration schema which:
-    * collapses Airship 1 `armada/Manifest/v2` and `armada/ChartGroup/v2` schemas
-    * supports DAGs or explicit groups of charts
-  * generates an argo workflow template which:
-    * can be run standalone
-    * can be called from Airship 2 `sitemanage` workflow, as a sub-step (single workflow UI)
-    * spawns tasks for each chart installation which:
-      * call the armada [apply_chart entrypoint with armadachart CRDs](https://review.opendev.org/#/q/topic:chart_entrypoint+(status:open+OR+status:merged)) (WIP)
+Runnable demos of using kustomize and argo workflow templates to deploy a set of
+armada chart deployment specs. Certain workflow templates are either static or
+generated via kustomize plugins depending on the demo. Workflow templates can be
+run standalone via a simple wrapper, or invokved via a higher level workflow,
+such as the Airship 2 `sitemanage` workflow, as a sub-step (single workflow UI).
+The leaf tasks of the workflow invoke the armada [apply_chart entrypoint](https://review.opendev.org/#/q/topic:chart_entrypoint+(status:open+OR+status:merged)) (WIP).
 
 # Dependencies:
 
@@ -20,9 +15,26 @@ POC integration of [Armada](https://opendev.org/airship/armada) functionality in
 * [helm and tiller](https://v2.helm.sh/docs/using_helm/#quickstart)
 * [argo](https://argoproj.github.io/docs/argo/demo.html) (need >= v2.5.0-rc6)
 
-# Demo
+# Demos
 
-`make demo`
+## `make demo_groups_gen`
+
+* Generates the workflow with an ArmadaWorkflow kustomize generator plugin
+* Invokes Armada with ArmadaChart CRDs stored in the cluster
+
+## `make demo_dag_gen`
+* Same as previous, except:
+* defines a DAG-based workflow
+
+## `make demo_static`
+* Completely static workflow template hierarchy
+* Armada is invoked with classic Airship 1 style documents
+
+## `make demo_chart_gen`
+* Same as previous, except:
+* Generates leaf workflow templates with an ArmadaChart kustomize generator
+  plugin, so that ArmadaCharts can participate in e.g. substitution
+
 
 # Caveats
 

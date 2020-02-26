@@ -2,12 +2,15 @@
 
 set -ex
 
+PLUGIN=$1
+EXAMPLE=$2
+WF_TEMPLATE=$3
+PAUSE=${PAUSE:-true}
+
 # Check dependencies
 kubectl version
 helm version
 argo version
-
-PAUSE=${PAUSE:-true}
 
 next_action() {
   ACTION=$1
@@ -29,25 +32,24 @@ mkdir -p $DEMO/bin
 mv kustomize $DEMO/bin
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-$DIR/../install_plugin.sh
 
-tree $DEMO
+if [ ! -z $PLUGIN ]; then
+  $DIR/../install_plugin.sh $PLUGIN
+fi
 
 build() {
-  EXAMPLE=$1
   next_action "generate and apply example '$EXAMPLE'"
   KUSTOMIZATION=$DIR/$EXAMPLE
   # See https://github.com/kubernetes/kubernetes/issues/44511
   # for why the namespace can't be included directly in the kustomization.
-  kubectl apply -f $KUSTOMIZATION/namespace.yaml
-  $DEMO/bin/kustomize build --reorder none --enable_alpha_plugins $KUSTOMIZATION | kubectl apply -f -
+  kubectl apply -f $DIR/common/namespace.yaml
+  $DEMO/bin/kustomize build --reorder none --enable_alpha_plugins --load_restrictor LoadRestrictionsNone $KUSTOMIZATION | tee >(kubectl apply -f -)
 }
 
 NAMESPACE=argo-armada-examples
 RELEASE_PREFIX=argo-armada-examples
 
 run_workflow_template() {
-  WF_TEMPLATE=$1
   next_action "run generated workflow template '$WF_TEMPLATE'"
   WF=$(argo submit $DIR/armada-workflow.yaml -o name --serviceaccount armada -p name=$WF_TEMPLATE)
   argo watch -n $NAMESPACE $WF
@@ -76,19 +78,8 @@ cleanup_last_workflow() {
   for i in $(helm ls --short | grep $RELEASE_PREFIX-); do helm del --purge $i; done
 }
 
-build basic
-# Delete a chart to force validation failure
-kubectl delete -n argo-armada-examples armadacharts b2
-# Run dag workflow (should fail)
-run_workflow_template armadaworkflow-dag
-# Re-sync documents to fix validation
-build basic
-# Retry workflow (should succeed now)
-retry_last_workflow
-show_last_workflow_results
-cleanup_last_workflow
-
-run_workflow_template armadaworkflow-groups
+build
+run_workflow_template
 show_last_workflow_results
 cleanup_last_workflow
 

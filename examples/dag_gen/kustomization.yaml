@@ -1,8 +1,7 @@
 generators:
-  - workflows/dag.yaml
-  - workflows/groups.yaml
+  - armadaworkflow-dag.yaml
 resources:
   - github.com/seaneagan/argo-armada//base?ref=master
   - https://review.opendev.org/airship/armada//manifests?ref=refs/changes/67/706967/11
-  - rbac.yaml
+  - ../common
   - charts

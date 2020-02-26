@@ -1,4 +1,4 @@
-# Copyright 2020 AT&T Intellectual Property.  All other rights reserved.
+# Copyright 2017 The Openstack-Helm Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-demo_dag_gen:
-	./examples/run.sh armadaworkflow dag_gen armadaworkflow-dag
-
-demo_groups_gen:
-	./examples/run.sh armadaworkflow groups_gen armadaworkflow-groups
-
-demo_chart_gen:
-	./examples/run.sh armadachart chart_gen airship-software-deploy
-
-demo_static:
-	./examples/run.sh "" static airship-software-deploy
+apiVersion: v1
+description: A Helm chart for Argo Workflows for Armada
+name: armada-chart
+version: 0.1.0
+keywords:
+- armada-chart
+sources:
+- https://github.com/seaneagan/argo-armada
+engine: gotpl

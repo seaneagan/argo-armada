@@ -1,0 +1,27 @@
+
+{{- $envAll := . -}}
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: {{ $envAll.Values.argo_workflow_template_prefix }}{{ $envAll.Values.chart.metadata.name }}
+  namespace: {{ $envAll.Values.chart.metadata.namespace }}
+spec:
+  entrypoint: entrypoint
+  templates:
+  - name: entrypoint
+    script:
+      command:
+      - /bin/sh
+      image: {{ $envAll.Values.image | quote }}
+      source: |
+        set -x
+        CHART_PATH=$(mktemp)
+        cat << 'EOF' > $CHART_PATH
+        schema: "armada/Chart/v2"
+        metadata:
+{{ $envAll.Values.chart.metadata | toYaml | indent 10 }}
+        data:
+{{ $envAll.Values.chart.data | toYaml | indent 10 }}
+        EOF
+        RELEASE_PREFIX={{ $envAll.Values.release_prefix | quote }}
+        armada apply_chart --release-prefix=$RELEASE_PREFIX $CHART_PATH

@@ -2,13 +2,15 @@
 
 set -ex
 
+PLUGIN=$1
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Install plugin
 PLUGIN_ROOT=$XDG_CONFIG_HOME/kustomize/plugin
-PLUGIN_DIR=$PLUGIN_ROOT/armada.airshipit.org/v1alpha1/armadaworkflow
+PLUGIN_DIR=$PLUGIN_ROOT/armada.airshipit.org/v1alpha1/$PLUGIN
 mkdir -p $PLUGIN_DIR
-cp -R $DIR/generator/. $PLUGIN_DIR
+cp -R $DIR/plugins/$PLUGIN/. $PLUGIN_DIR
 
 # Install plugin-local helm 3 cli for ArmadaWorkflow schema validation (optional)
 DOWNLOAD_CONTAINER=$PLUGIN_DIR/helm_download

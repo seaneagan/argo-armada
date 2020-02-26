@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: airship-software-deploy-group-a
+  namespace: argo-armada-examples
+spec:
+  entrypoint: entrypoint
+  templates:
+  - name: entrypoint
+    steps:
+      - - name: airship-software-deploy-chart-a1
+          templateRef:
+            name: airship-software-deploy-chart-a1
+            template: entrypoint
+        - name: airship-software-deploy-chart-a2
+          templateRef:
+            name: airship-software-deploy-chart-a2
+            template: entrypoint

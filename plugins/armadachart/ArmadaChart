@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+chart_yaml_path=$1
+chart_yaml=$(cat "$chart_yaml_path")
+
+values=$(cat <<EOF
+chart:
+$(echo "$chart_yaml" | sed 's/^/  /')
+EOF
+)
+
+values_file=$(mktemp)
+echo "$values" > "$values_file"
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# Prefer plugin-local helm cli
+PATH=$DIR:$PATH
+
+# Generate workflow template
+# `helm template` accepts release name differently in helm 2 vs 3
+if helm version --client --short | grep -q "v3\."; then
+  NAME_ARG=
+else
+  NAME_ARG=--name=
+fi
+helm template ${NAME_ARG}ignored "$DIR"/chart --values="$values_file"

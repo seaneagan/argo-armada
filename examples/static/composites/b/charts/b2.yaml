@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: airship-software-deploy-chart-b2
+  namespace: argo-armada-examples
+spec:
+  entrypoint: entrypoint
+  templates:
+  - name: entrypoint
+    script:
+      command:
+      - /bin/sh
+      image: docker.io/seaneagan/airship-armada:chart_entrypoint-ubuntu_bionic
+      source: |
+        set -x
+        CHART_PATH=$(mktemp)
+        cat << 'EOF' > $CHART_PATH
+        schema: "armada/Chart/v2"
+        metadata:
+          name: b2
+          namespace: argo-armada-examples
+        data:
+          release: b2
+          namespace: argo-armada-examples
+          wait:
+            timeout: 100
+            labels:
+              release_group: armada-b2
+          source:
+            location: https://kubernetes-charts-incubator.storage.googleapis.com/raw-0.2.3.tgz
+            subpath: raw
+            type: tar
+          values:
+            resources:
+              - apiVersion: v1
+                kind: ConfigMap
+                metadata:
+                  name: b2
+                data:
+                  chart: b2
+        EOF
+        RELEASE_PREFIX=argo-armada-examples
+        armada apply_chart --release-prefix=$RELEASE_PREFIX $CHART_PATH

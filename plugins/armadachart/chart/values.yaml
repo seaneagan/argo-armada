@@ -1,0 +1,4 @@
+image: docker.io/seaneagan/airship-armada:chart_entrypoint-ubuntu_bionic
+release_prefix: armada
+argo_workflow_template_prefix: airship-software-deploy-chart-
+chart: {}
