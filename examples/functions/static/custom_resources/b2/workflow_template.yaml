@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: airship-software-deploy-chart-b2
+  namespace: argo-armada-examples
+spec:
+  entrypoint: entrypoint
+  templates:
+    - name: entrypoint
+      script:
+        image: "docker.io/seaneagan/airship-armada:chart_entrypoint_kube-ubuntu_bionic"
+        command: [/bin/sh]
+        source: |
+          set -x
+          armada apply_chart --release-prefix=argo-armada-examples "kube:armadacharts/argo-armada-examples/b2"

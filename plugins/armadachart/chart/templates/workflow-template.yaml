@@ -21,7 +21,7 @@ spec:
         metadata:
 {{ $envAll.Values.chart.metadata | toYaml | indent 10 }}
         data:
-{{ $envAll.Values.chart.data | toYaml | indent 10 }}
+{{ $envAll.Values.chart.spec | toYaml | indent 10 }}
         EOF
         RELEASE_PREFIX={{ $envAll.Values.release_prefix | quote }}
         armada apply_chart --release-prefix=$RELEASE_PREFIX $CHART_PATH

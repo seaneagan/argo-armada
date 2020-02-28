@@ -50,14 +50,8 @@ NAMESPACE=argo-armada-examples
 RELEASE_PREFIX=argo-armada-examples
 
 run_workflow_template() {
-  next_action "run generated workflow template '$WF_TEMPLATE'"
+  next_action "run workflow template '$WF_TEMPLATE'"
   WF=$(argo submit $DIR/armada-workflow.yaml -o name --serviceaccount armada -p name=$WF_TEMPLATE)
-  argo watch -n $NAMESPACE $WF
-}
-
-retry_last_workflow() {
-  next_action "retry workflow '$WF'"
-  WF=$(argo retry -o name -n $NAMESPACE $WF)
   argo watch -n $NAMESPACE $WF
 }
 

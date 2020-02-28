@@ -26,15 +26,25 @@ The leaf tasks of the workflow invoke the armada [apply_chart entrypoint](https:
 * Same as previous, except:
 * defines a DAG-based workflow
 
-## `make demo_static`
+## `make demo_static_embedded`
 * Completely static workflow template hierarchy
-* Armada is invoked with classic Airship 1 style documents
+* Armada is invoked with classic Airship 1 style chart documents
+* Chart documents are embedded into leaf workflow templates
+
+## `make demo_static_secrets`
+* Completely static workflow template hierarchy
+* Armada is invoked with classic Airship 1 style chart documents
+* Chart documents are stored in Secrets mounted into workflow templates
+* NOTE: This doesn't work yet, depends on an [in-flight Argo feature](https://github.com/argoproj/argo/issues/2007)
+
+## `make demo_static_custom_resources`
+* Completely static workflow template hierarchy
+* Armada is invoked with CRD chart documents
 
 ## `make demo_chart_gen`
-* Same as previous, except:
-* Generates leaf workflow templates with an ArmadaChart kustomize generator
-  plugin, so that ArmadaCharts can participate in e.g. substitution
-
+* Example of using chart documents as kustomize generator input to generate
+  leaf workflow templates to satisfy the chart. Could generate any of the above
+  static examples using this approach
 
 # Caveats
 

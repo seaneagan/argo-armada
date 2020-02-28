@@ -80,7 +80,7 @@
             "name"
           ]
         },
-        "data": {
+        "spec": {
           "type": "object",
           "properties": {
             "release": {
@@ -264,7 +264,7 @@
       },
       "required": [
         "metadata",
-        "data"
+        "spec"
       ],
       "additionalProperties": false
     }

@@ -1,0 +1,4 @@
+resources:
+  - ../../functions/resolved/a1
+  - ../../functions/resolved/a2
+  - deploy.yaml

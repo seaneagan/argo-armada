@@ -18,8 +18,25 @@ demo_dag_gen:
 demo_groups_gen:
 	./examples/run.sh armadaworkflow groups_gen armadaworkflow-groups
 
-demo_chart_gen:
-	./examples/run.sh armadachart chart_gen airship-software-deploy
+demo_chart_gen: clean
+	mkdir examples/functions/resolved/
+	cp -r examples/functions/gen/* examples/functions/resolved/
+	./examples/run.sh armadachart types/example airship-software-deploy
 
-demo_static:
-	./examples/run.sh "" static airship-software-deploy
+demo_static_embedded: clean
+	mkdir examples/functions/resolved/
+	cp -r examples/functions/static/embedded/* examples/functions/resolved/
+	./examples/run.sh "" types/example airship-software-deploy
+
+demo_static_secrets: clean
+	mkdir examples/functions/resolved/
+	cp -r examples/functions/static/secrets/* examples/functions/resolved
+	./examples/run.sh "" types/example airship-software-deploy
+
+demo_static_custom_resources: clean
+	mkdir examples/functions/resolved/
+	cp -r examples/functions/static/custom_resources/* examples/functions/resolved/
+	./examples/run.sh "" types/example airship-software-deploy
+
+clean:
+	rm -rf examples/functions/resolved/
