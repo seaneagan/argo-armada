@@ -9,7 +9,7 @@ PAUSE=${PAUSE:-true}
 
 # Check dependencies
 kubectl version
-helm version
+# helm version
 argo version
 
 next_action() {

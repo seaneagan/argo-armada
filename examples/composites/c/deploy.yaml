@@ -8,7 +8,14 @@ spec:
   templates:
   - name: entrypoint
     steps:
-      - - name: airship-software-deploy-chart-c1
-          templateRef:
-            name: airship-software-deploy-chart-c1
+      - - templateRef:
+            name: airship-software-deploy-chart
             template: entrypoint
+          arguments:
+            parameters:
+              - name: namespace
+                value: argo-armada-examples
+              - name: name
+                value: "{{item}}"
+          withItems:
+            - c1

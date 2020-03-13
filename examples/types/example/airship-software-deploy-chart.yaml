@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: airship-software-deploy-chart
+  namespace: argo-armada-examples
+spec:
+  templates:
+    - name: entrypoint
+      inputs:
+        parameters:
+          - name: namespace
+          - name: name
+      script:
+        image: "docker.io/seaneagan/airship-armada:chart_entrypoint_kube-ubuntu_bionic"
+        command: [/bin/sh]
+        source: |
+          set -x
+          while ! armada tiller --status --tiller-host localhost 2>&1 > /dev/null; do
+            echo tiller not yet ready
+            sleep 2
+          done
+          armada apply_chart --tiller-host localhost --release-prefix=argo-armada-examples "kube:armadacharts/{{inputs.parameters.namespace}}/{{inputs.parameters.name}}"
+      sidecars:
+        - name: tiller
+          image: gcr.io/kubernetes-helm/tiller:v2.16.3
+          env:
+            - name: TILLER_NAMESPACE
+              value: kube-system
+            - name: TILLER_HISTORY_MAX
+              value: "0"
+          command:
+            # Wrap tiller process since it lacks proper signal handling, which
+            # causes workflow failure when Argo kills it directly.
+            - /bin/sh
+            - -c
+            - |
+              _term() {
+                echo "Caught SIGTERM signal!"
+                kill -TERM "$child" 2>/dev/null
+              }
+              trap _term SIGTERM
+
+              /tiller --storage secret -logtostderr -v 5 &
+              child=$!
+              wait "$child"

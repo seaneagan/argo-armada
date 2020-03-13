@@ -14,5 +14,6 @@ subjects:
     namespace: argo-armada-examples
 roleRef:
   kind: ClusterRole
-  name: armada
+  # name: armada
+  name: cluster-admin
   apiGroup: rbac.authorization.k8s.io
